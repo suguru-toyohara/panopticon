@@ -1,0 +1,13 @@
+# cline
+.cline
+.reference
+
+# Deno
+.DS_Store
+*.log
+dist/
+.env
+
+# vscode 
+
+.vscode
