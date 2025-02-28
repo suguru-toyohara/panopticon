@@ -185,39 +185,49 @@ export class FileEventStore implements EventStore {
     await this.initialize();
 
     return this.events.filter((event) => {
-      const payload = (event as any).payload;
-      //FIXME anyは逃げだよ
+      const payload = event.payload;
+
       if (!payload) {
         return false;
       }
 
       // プロジェクト関連イベント
-      if (payload.projectId === entityId) {
+      if ("projectId" in payload && payload.projectId === entityId) {
         return true;
       }
 
       // マイルストーン関連イベント
-      if (payload.milestoneId === entityId) {
+      if ("milestoneId" in payload && payload.milestoneId === entityId) {
         return true;
       }
 
       // タスク関連イベント
-      if (payload.taskId === entityId) {
+      if ("taskId" in payload && payload.taskId === entityId) {
         return true;
       }
 
       // プロジェクト作成イベント
-      if (payload.project && payload.project.projectId === entityId) {
+      if (
+        "project" in payload && payload.project &&
+        "projectId" in payload.project && payload.project.projectId === entityId
+      ) {
         return true;
       }
 
       // マイルストーン作成イベント
-      if (payload.milestone && payload.milestone.milestoneId === entityId) {
+      if (
+        "milestone" in payload && payload.milestone &&
+        "milestoneId" in payload.milestone &&
+        payload.milestone.milestoneId === entityId
+      ) {
         return true;
       }
 
       // タスク作成イベント
-      if (payload.task && payload.task.taskId === entityId) {
+      if (
+        "task" in payload && payload.task && "taskId" in payload.task &&
+        payload.task.taskId === entityId
+      ) {
         return true;
       }
 

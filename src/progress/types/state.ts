@@ -13,13 +13,7 @@
  * - タスク状態（TaskState）
  */
 
-import {
-  MilestoneInfo,
-  ProjectInfo,
-  Relations,
-  Statistics,
-  TaskInfo,
-} from "./models.ts";
+import { MilestoneInfo, ProjectInfo, TaskInfo } from "./models.ts";
 
 /**
  * タスク状態
