@@ -1,5 +1,5 @@
+/* TODO : 古いので、後ほど修正する。
 import { EventEmitter } from "./events.ts";
-import { Config } from "./config.ts";
 import { console } from "./logger.ts";
 
 export class Core {
@@ -18,15 +18,16 @@ export class Core {
     // 各モジュールの初期化処理をここに追加
   }
 
-  // TODO : asyncにlinterマークついてるけど、これは気にしない。あとでawait書くから。
-  async start(): Promise<void> {
+  // asyncメソッドにはawaitが必要
+  start(): Promise<void> {
     console.debug("パノプティコンを起動中...");
 
     // 各モジュールの起動処理をここに追加
 
     console.debug("パノプティコンが起動しました。");
+    return Promise.resolve();
   }
 }
 
 export { EventEmitter } from "./events.ts";
-export { Config } from "./config.ts";
+*/

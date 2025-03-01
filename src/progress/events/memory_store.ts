@@ -22,9 +22,9 @@ export class InMemoryEventStore implements EventStore {
    * @param event 保存するイベント
    * @returns 保存されたイベント
    */
-  async saveEvent(event: ProgressEvent): Promise<ProgressEvent> {
+  saveEvent(event: ProgressEvent): Promise<ProgressEvent> {
     this.events.push(event);
-    return event;
+    return Promise.resolve(event);
   }
 
   /**
@@ -32,17 +32,17 @@ export class InMemoryEventStore implements EventStore {
    * @param events 保存するイベントの配列
    * @returns 保存されたイベントの配列
    */
-  async saveEvents(events: ProgressEvent[]): Promise<ProgressEvent[]> {
+  saveEvents(events: ProgressEvent[]): Promise<ProgressEvent[]> {
     this.events.push(...events);
-    return events;
+    return Promise.resolve(events);
   }
 
   /**
    * すべてのイベントを取得
    * @returns すべてのイベントの配列
    */
-  async getAllEvents(): Promise<ProgressEvent[]> {
-    return [...this.events];
+  getAllEvents(): Promise<ProgressEvent[]> {
+    return Promise.resolve([...this.events]);
   }
 
   /**
@@ -50,9 +50,9 @@ export class InMemoryEventStore implements EventStore {
    * @param eventId イベントID
    * @returns イベント（存在しない場合はnull）
    */
-  async getEventById(eventId: string): Promise<ProgressEvent | null> {
+  getEventById(eventId: string): Promise<ProgressEvent | null> {
     const event = this.events.find((e) => e.id === eventId);
-    return event || null;
+    return Promise.resolve(event || null);
   }
 
   /**
@@ -60,8 +60,8 @@ export class InMemoryEventStore implements EventStore {
    * @param entityId エンティティID（プロジェクト、マイルストーン、タスクのID）
    * @returns エンティティに関連するイベントの配列
    */
-  async getEventsByEntityId(entityId: string): Promise<ProgressEvent[]> {
-    return this.events.filter((event) => {
+  getEventsByEntityId(entityId: string): Promise<ProgressEvent[]> {
+    const filteredEvents = this.events.filter((event) => {
       const payload = event.payload;
 
       if (!payload) {
@@ -111,6 +111,8 @@ export class InMemoryEventStore implements EventStore {
       // どれにも当てはまらない場合
       return false;
     });
+
+    return Promise.resolve(filteredEvents);
   }
 
   /**
@@ -119,17 +121,19 @@ export class InMemoryEventStore implements EventStore {
    * @param endTime 終了時間（ISO形式の日付文字列）
    * @returns 時間範囲内のイベントの配列
    */
-  async getEventsByTimeRange(
+  getEventsByTimeRange(
     startTime: string,
     endTime: string,
   ): Promise<ProgressEvent[]> {
     const start = new Date(startTime).getTime();
     const end = new Date(endTime).getTime();
 
-    return this.events.filter((event) => {
+    const filteredEvents = this.events.filter((event) => {
       const eventTime = new Date(event.timestamp).getTime();
       return eventTime >= start && eventTime <= end;
     });
+
+    return Promise.resolve(filteredEvents);
   }
 
   /**
@@ -137,14 +141,18 @@ export class InMemoryEventStore implements EventStore {
    * @param eventType イベント種別
    * @returns 特定のイベント種別のイベントの配列
    */
-  async getEventsByType(eventType: string): Promise<ProgressEvent[]> {
-    return this.events.filter((event) => event.type === eventType);
+  getEventsByType(eventType: string): Promise<ProgressEvent[]> {
+    const filteredEvents = this.events.filter((event) =>
+      event.type === eventType
+    );
+    return Promise.resolve(filteredEvents);
   }
 
   /**
    * イベントストアをクリア（主にテスト用）
    */
-  async clear(): Promise<void> {
+  clear(): Promise<void> {
     this.events = [];
+    return Promise.resolve();
   }
 }
