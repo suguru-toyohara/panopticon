@@ -12,6 +12,7 @@ import { ConfigManager } from "./interface.ts";
 import { ConfigData, ConfigTypeMap, ConfigTypeString } from "./types.ts";
 import { DEFAULT_CONFIG } from "./constants.ts";
 import { ConfigValidator, DefaultConfigValidator } from "./config_validator.ts";
+import { mergeConfig } from "./utils.ts";
 
 /**
  * ファイルベースの設定管理実装
@@ -83,8 +84,7 @@ export class FileConfigManager implements ConfigManager {
 
       // 読み込んだ設定をデフォルト設定とマージ
       if (loadedData) {
-        this.configData = structuredClone(DEFAULT_CONFIG); // this.mergeConfig(DEFAULT_CONFIG, loadedData);
-        //TODO : impl
+        this.configData = mergeConfig(DEFAULT_CONFIG, loadedData);
       } else {
         // パース失敗時はデフォルト設定を使用
         this.configData = structuredClone(DEFAULT_CONFIG);
@@ -182,12 +182,11 @@ export class FileConfigManager implements ConfigManager {
 
     // 現在の設定と新しい設定をマージ
     const currentConfig = this.getConfig(type);
-    // TODO: 実装を完成させる（今回のタスク範囲外）
-    const updatedConfig = currentConfig;
+    const updatedConfig = mergeConfig(currentConfig, config);
 
     // 設定を更新
     this.configData[type] = updatedConfig;
-    // CHECK : 要テスト
+    
     // 設定を保存
     await this.save();
   }
@@ -199,9 +198,4 @@ export class FileConfigManager implements ConfigManager {
     // 現在のメモリ内の設定を返す
     return await Promise.resolve(structuredClone(this.configData));
   }
-
-  /**
-   * 設定をマージする
-   * TODO : impl
-   */
 }

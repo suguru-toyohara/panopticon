@@ -14,6 +14,7 @@ import { assertSpyCalls, spy } from "jsr:@std/testing/mock";
 import { join } from "jsr:@std/path";
 import { FileConfigManager } from "../src/core/config/file_config.ts";
 import { DEFAULT_CONFIG } from "../src/core/config/constants.ts";
+import { mergeConfig } from "../src/core/config/utils.ts";
 
 // テスト用のヘルパー関数
 async function withTempDir(fn: (tempDir: string) => Promise<void>) {
@@ -27,6 +28,34 @@ async function withTempDir(fn: (tempDir: string) => Promise<void>) {
     await Deno.remove(tempDir, { recursive: true });
   }
 }
+
+// マージ機能のテスト
+Deno.test("FileConfigManager - 設定のマージ機能", async () => {
+    // FIXME : ここに必要な処理を入れる。
+    // 基本的なマージテスト
+    const target = { a: 1, b: 2 };
+    const source = { b: 3};
+    const result = mergeConfig(target, source);
+    assertEquals(result, { a: 1, b: 3});
+
+    // ネストされたオブジェクトのマージテスト
+    const targetNested = { a: 1, b: { x: 1, y: 2 },c: 1 };
+    const sourceNested = { b: { y: 3, x: 4 }, c: 5 };
+    const resultNested = mergeConfig(targetNested, sourceNested);
+    assertEquals(resultNested, { a: 1, b: { x: 4, y: 3 }, c: 5 });
+
+    // 配列のマージテスト（上書き）
+    const targetArray = { a: 1, b: [1, 2, 3] };
+    const sourceArray = { b: [4, 5] };
+    const resultArray = mergeConfig(targetArray, sourceArray);
+    assertEquals(resultArray, { a: 1, b: [4, 5] });
+
+    // undefinedのスキップテスト
+    const targetUndef = { a: 1, b: 2 };
+    const sourceUndef = { a: undefined };
+    const resultUndef = mergeConfig(targetUndef, sourceUndef);
+    assertEquals(resultUndef, { a: 1, b: 2});
+});
 
 // 設定の読み込み/保存のテスト
 Deno.test("FileConfigManager - 設定の読み込みと保存", async () => {
