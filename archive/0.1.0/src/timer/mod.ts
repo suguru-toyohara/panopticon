@@ -13,7 +13,6 @@
  */
 
 import { EventEmitter } from "@/core/events.ts";
-import { Config } from "@/core/config.ts";
 
 /**
  * タイマーの状態を表す列挙型
@@ -63,16 +62,14 @@ export type TimerEventData =
  */
 export class PomodoroTimer {
   private events: EventEmitter;
-  private config: Config;
   private state: TimerState = TimerState.IDLE;
   private remaining: number = 0; // 残り時間（分）
   private elapsed: number = 0; // 経過時間（分）
   private cycle: number = 1; // 現在のサイクル番号（1スタート）
   private timerId?: number; // タイマーID
 
-  constructor(events: EventEmitter, config: Config) {
+  constructor(events: EventEmitter) {
     this.events = events;
-    this.config = config;
   }
 
   /**
@@ -80,7 +77,7 @@ export class PomodoroTimer {
    */
   startWork(): void {
     this.state = TimerState.WORKING;
-    this.remaining = this.config.get("timer").workDuration;
+    this.remaining = 4;
     this.elapsed = 0;
     this.startTimer();
 
@@ -98,12 +95,7 @@ export class PomodoroTimer {
     this.state = TimerState.RESTING;
 
     // 長い休憩かどうかを判断
-    const isLongRest =
-      this.cycle % this.config.get("timer").longRestInterval === 0;
-    this.remaining = isLongRest
-      ? this.config.get("timer").longRestDuration
-      : this.config.get("timer").restDuration;
-
+    
     this.elapsed = 0;
     this.startTimer();
 
@@ -147,7 +139,7 @@ export class PomodoroTimer {
       return;
     }
 
-    this.state = this.remaining === this.config.get("timer").workDuration
+    this.state = this.remaining === 20
       ? TimerState.WORKING
       : TimerState.RESTING;
 

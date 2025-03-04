@@ -30,7 +30,7 @@ async function withTempDir(fn: (tempDir: string) => Promise<void>) {
 }
 
 // マージ機能のテスト
-Deno.test("FileConfigManager - 設定のマージ機能", async () => {
+Deno.test("FileConfigManager - 設定のマージ機能", () => {
     // FIXME : ここに必要な処理を入れる。
     // 基本的なマージテスト
     const target = { a: 1, b: 2 };
