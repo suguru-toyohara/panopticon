@@ -1,7 +1,7 @@
 #!/usr/bin/env deno run --allow-read --allow-write --allow-env --allow-net
 
 import { Core } from "@/core/mod.ts";
-import { console } from "@/core/logger.ts";
+import { console } from "./core/logger.ts";
 
 async function main() {
   console.info("パノプティコン - 起動中...");

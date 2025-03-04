@@ -23,16 +23,16 @@ class MockConfig extends Config {
     super("./test-config.json");
   }
 
-  override get<K extends keyof import("@/core/config.ts").ConfigData>(
+  override get<K extends keyof import("../core/config.ts").ConfigData>(
     key: K,
-  ): import("@/core/config.ts").ConfigData[K] {
+  ): import("../core/config.ts").ConfigData[K] {
     if (key === "timer") {
       return {
         workDuration: 25,
         restDuration: 5,
         longRestDuration: 15,
         longRestInterval: 4,
-      } as unknown as import("@/core/config.ts").ConfigData[K];
+      } as unknown as import("../core/config.ts").ConfigData[K];
     }
     return super.get(key);
   }

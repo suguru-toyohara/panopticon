@@ -12,9 +12,9 @@
 import { assertEquals, assertRejects } from "jsr:@std/assert";
 import { assertSpyCalls, spy } from "jsr:@std/testing/mock";
 import { join } from "jsr:@std/path";
-import { FileConfigManager } from "../src/core/config/file_config.ts";
-import { DEFAULT_CONFIG } from "../src/core/config/constants.ts";
-import { mergeConfig } from "../src/core/config/utils.ts";
+import { FileConfigManager } from "../core/config/file_config.ts";
+import { DEFAULT_CONFIG } from "../core/config/constants.ts";
+import { mergeConfig } from "../core/config/utils.ts";
 
 // テスト用のヘルパー関数
 async function withTempDir(fn: (tempDir: string) => Promise<void>) {

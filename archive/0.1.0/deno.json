@@ -1,0 +1,14 @@
+{
+  "version": "0.1.0",
+  "description": "現代の迷えるADHD知能労働者向け労働監視エージェント",
+  "tasks": {
+    "start": "deno run --allow-read --allow-write --allow-env --allow-net src/main.ts",
+    "dev": "deno run --watch --allow-read --allow-write --allow-env --allow-net src/main.ts",
+    "test": "deno test --allow-read --allow-write --allow-env",
+    "compile": "deno compile --allow-read --allow-write --allow-env --allow-net --output panopticon src/main.ts"
+  },
+  "imports": {
+    "@/": "./src/",
+    "tui": "https://deno.land/x/tui@2.1.11/mod.ts"
+  }
+}
