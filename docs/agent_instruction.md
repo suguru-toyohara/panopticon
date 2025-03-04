@@ -25,7 +25,7 @@
 - タスクcomplete時は必ず会話内容を議事録に書く
 - 議事録は`docs/archive/talk_archive/YYYYMMDD_HHmm_[summary].md`に記録する。
   - `[summary]`には適宜適切なタイトルを書く。
-- 議事録リファレンスを`.cline/archive/talk_archive/0.2.0.md`に以下を追加する
+- 議事録リファレンスを`docs/archive/talk_archive/0.2.0.md`に以下を追加する
   - 見出し2にして`[summary]`のタイトルを入れ込む
   - projectRootからの議事録ファイルPATHを1行追加する
   - 3行まとめを追加する
